@@ -1,0 +1,55 @@
+<div class="container">
+  <h2>Lista de Productos</h2>
+  <button (click)="mostrarFormularioNuevo()" class="btn btn-primary">Nuevo Producto</button>
+
+  <!--? Formulario para agregar/editar producto -->
+  <div *ngIf="mostrarFormulario" class="formulario">
+    <h3>{{ modoEdicion ? 'Editar Producto' : 'Agregar Producto' }}</h3>
+    <form (ngSubmit)="guardarProducto()">
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="productoForm.nombre" name="nombre" required class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Descripción:</label>
+        <input type="text" [(ngModel)]="productoForm.descripcion" name="descripcion" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Precio:</label>
+        <input type="number" [(ngModel)]="productoForm.precio" name="precio" required class="form-control" step="0.01" />
+      </div>
+      <button type="submit" class="btn btn-success">{{ modoEdicion ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" (click)="cancelar()" class="btn btn-secondary">Cancelar</button>
+    </form>
+  </div>
+
+  <div *ngIf="isLoading">Cargando productos...</div>
+  <table *ngIf="!isLoading && productos.length > 0" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Fecha de Creación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td>{{ producto.id }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.descripcion }}</td>
+        <td>{{ producto.precio | currency }}</td>
+        <td>{{ producto.fecha_Creacion | date:'short' }}</td>
+        <td>
+          <button (click)="editarProducto(producto)" class="btn btn-warning">Editar</button>
+          <button (click)="eliminarProducto(producto.id)" class="btn btn-danger">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!isLoading && productos.length === 0">
+    No hay productos disponibles.
+  </div>
+</div>

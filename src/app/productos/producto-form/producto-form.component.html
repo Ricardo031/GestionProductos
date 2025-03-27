@@ -1,0 +1,33 @@
+<mat-dialog-content>
+  <div class="dialog-header">
+    <h2>{{ data.mode === 'add' ? 'Nuevo Producto' : 'Editar Producto' }}</h2>
+  </div>
+  
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" required>
+      <mat-error *ngIf="form.get('nombre')?.invalid">Campo obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" formControlName="precio" required>
+      <mat-error *ngIf="form.get('precio')?.hasError('required')">Campo obligatorio</mat-error>
+      <mat-error *ngIf="form.get('precio')?.hasError('min')">El valor mínimo es 0</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" rows="3"></textarea>
+    </mat-form-field>
+    
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    {{ data.mode === 'add' ? 'Guardar' : 'Actualizar' }}
+  </button>
+</mat-dialog-actions>
